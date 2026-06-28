@@ -14,12 +14,12 @@ still ahead, updated as the project moves forward.
 
 ### Done
 - [x] Folder structure and project layout
+- [x] Append-only log storage (`internal/storage`)
 
 ### Not yet built
-- [ ] Append-only log storage (`internal/storage`)
-  - Segment files with size-based rollover
-  - Offset index per segment for O(1) lookup by offset (no scanning)
-  - Reopening an existing log directory resumes correctly after a restart
+- [ ] Segment files with size-based rollover
+- [ ] Offset index per segment for O(1) lookup by offset (no scanning)
+- [ ] Reopening an existing log directory resumes correctly after a restart
 - [ ] Network layer (TCP server, wire protocol) - `internal/network` exists
       as an empty package, nothing implemented yet
 - [ ] Partitioning / topic abstraction - `internal/partition`, `internal/topic`
@@ -58,6 +58,7 @@ go-kafka/
 ```
 
 ## Why these design choices
+1. Used 4 bytes for the offset index, Because a single log segment rarely holds more than 4.29 billion messages, the resulting relative offset safely fits within 4 bytes.
 
 ## Roadmap
 
