@@ -67,7 +67,7 @@ func (l *Log) Read(position int64) ([]byte, error) {
 		return nil, err
 	}
 
-	length := utils.FromByteArr(byteLength)
+	length := utils.FromByteArr32(byteLength, HEADER_SIZE)
 	data := make([]byte, length)
 	_, err = io.ReadFull(l.file, data)
 
@@ -75,6 +75,14 @@ func (l *Log) Read(position int64) ([]byte, error) {
 		return nil, err
 	}
 	return data, nil
+}
+
+func (l *Log) Size() int64 {
+	fileInfo, err := l.file.Stat()
+	if err != nil {
+		return 0
+	}
+	return fileInfo.Size()
 }
 
 func (l *Log) Close() error {

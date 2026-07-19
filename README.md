@@ -59,6 +59,10 @@ go-kafka/
 
 ## Why these design choices
 1. Used 4 bytes for the offset index, Because a single log segment rarely holds more than 4.29 billion messages, the resulting relative offset safely fits within 4 bytes.
+2. +----------------+----------------+
+   | relativeOffset | bytePosition   |
+   |    uint32      |    uint64      |
+   +----------------+----------------+
 
 ## Roadmap
 
