@@ -19,7 +19,6 @@ type Segment struct {
 
 func (s *Segment) Open(baseOffset int64, maxSize int64) error {
 	s.BaseOffset = baseOffset
-	s.NextOffset = baseOffset
 	s.maxSize = maxSize
 
 	logFile, err := storage.Open(fmt.Sprintf("%d", s.BaseOffset), s.maxSize)
@@ -37,6 +36,13 @@ func (s *Segment) Open(baseOffset int64, maxSize int64) error {
 	}
 
 	s.IndexFile = indexFile
+	s.NextOffset = baseOffset
+	count, err := s.IndexFile.EntryCount()
+
+	if err != nil {
+		return err
+	}
+	s.NextOffset = s.NextOffset + count
 
 	return nil
 }

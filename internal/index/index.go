@@ -79,6 +79,14 @@ func (index *Index) Read(relativeOffset int64) (uint64, error) {
 	return bytePositionInt, nil
 }
 
+func (index *Index) EntryCount() (int64, error) {
+	fileSize, err := index.file.Stat()
+	if err != nil {
+		return 0, err
+	}
+	return fileSize.Size() / ENTRY_SIZE, nil
+}
+
 func (index *Index) Close() error {
 	err := index.file.Close()
 	if err != nil {
